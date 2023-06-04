@@ -189,6 +189,7 @@ def group_ranges(sorted_list):
 def parse_file(path):
     all_packets = []
     last_ts = 0
+    did_write_header = False
 
     with open(path, 'rb') as f:
         with open('out.csv', 'w') as csv:
@@ -208,11 +209,19 @@ def parse_file(path):
                         print(f"{datetime.utcfromtimestamp(ts)}: {parsed}")
 
                         # Export the first datapoint each minute to "out.csv"
+                        if not did_write_header:
+                            did_write_header = True
+                            csv.write("date," + ",".join(sorted(parsed.keys())) + "\n")
+
                         if ts%60 < last_ts%60:
-                            csv.write(f"{datetime.utcfromtimestamp(ts)},{parsed}\n")
+                            to_write = ""
+                            for k in sorted(parsed.keys()):
+                                to_write += str(parsed[k]) + ","
+                            
+                            csv.write(f"{datetime.utcfromtimestamp(ts)},{to_write[:-1]}\n")
 
                         last_ts = ts
-                        
+
                     except UnkownProtocolException:
                         pass
 
