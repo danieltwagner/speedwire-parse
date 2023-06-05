@@ -13,9 +13,45 @@ TAG_END = b'\x00\x00'
 TAG_SMA_NET_2 = b'\x00\x10'
 GROUP1 = b'\x00\x00\x00\x01'
 
-KNOWN_METRICS = {
-    2: "export-tenths-watt",
-    10: "also-export-tenths-watt",
+KNOWN_CHANNELS = {
+    1: "power-drawn-tenths-watt",
+    2: "grid-feed-in-tenths-watt",
+    3: "negative-reactive-power-grid-feed-var",
+    4: "reactive-power-grid-feed-var",
+    9: "negative-apparent-power-tenths-VA",
+    10: "apparent-power-tenths-VA",
+    13: "power-factor",
+    14: "grid-frequency-Hz",
+
+    21: "power-drawn-L1-tenths-watt",
+    22: "power-grid-feeding-L1-tenth-watts",
+    23: "negative-reactive-power-grid-feed-L1-var",
+    24: "reactive-power-grid-feed-L1-var",
+    29: "negative-apparent-power-L1-tenths-VA",
+    30: "apparent-power-L1-tenths-VA",
+    31: "grid-current-phase-L1-mA",
+    32: "grid-voltage-phase-L1-mV",
+    33: "power-factor-L1",
+
+    21: "power-drawn-L2-tenths-watt",
+    42: "power-grid-feeding-L2-tenth-watts",
+    43: "negative-reactive-power-grid-feed-L2-var",
+    44: "reactive-power-grid-feed-L2-var",
+    49: "negative-apparent-power-L2-tenths-VA",
+    50: "apparent-power-L2-tenths-VA",
+    51: "grid-current-phase-L2-mA",
+    52: "grid-voltage-phase-L2-mV",
+    53: "power-factor-L2",
+
+    21: "power-drawn-L3-tenths-watt",
+    62: "power-grid-feeding-L3-tenth-watts",
+    63: "negative-reactive-power-grid-feed-L3-var",
+    64: "reactive-power-grid-feed-L3-var",
+    69: "negative-apparent-power-L3-tenths-VA",
+    70: "apparent-power-L3-tenths-VA",
+    71: "grid-current-phase-L3-mA",
+    72: "grid-voltage-phase-L3-mV",
+    73: "power-factor-L3",
 }
 
 class UnkownProtocolException(Exception):
@@ -64,32 +100,33 @@ def parse_sma_net_packet(data):
         raise UnkownProtocolException("SMA Protocol ID is " + str(protocol_id))
 
     # Next comes some unknown data, could be meter number? followed by uptime
-    # bytes   2-  9 = 0x0003 0174 b356 e7ff
+    # bytes 2 - 3 = 0x0003
+    parsed["meter-id"] = f"{data[4:6].hex()}-{int.from_bytes(data[6:10])}"
     parsed["uptime-millis"] = int.from_bytes(data[10:14])
     read = 14
 
     # Now parse the regular parts of the packet.
     # They are structured like so:
     # 0x0001 0400 xxxx xxxx
-    # where the first 2 bytes appear to be the metric number or tag,
+    # where the first 2 bytes appear to be the channel number,
     # the next byte is the length of the data, followed by a zero byte.
     # Next comes the actual value.
 
     reached_end = False
     while not reached_end:
-        metric = int.from_bytes(data[read:read+2])
+        channel = int.from_bytes(data[read:read+2])
         length = data[read+2]
         assert data[read+3] == 0, "Found non-zero fourth byte at %d: %08x" % (read, int.from_bytes(data[read:read+4]))
         read += 4
         
-        name = KNOWN_METRICS[metric] if metric in KNOWN_METRICS else "unknown"
+        name = KNOWN_CHANNELS[channel] if channel in KNOWN_CHANNELS else "unknown"
         if length == 0x08:
             name += "-cumulative"
 
-        parsed[f'{metric:02d}-{name}'] = int.from_bytes(data[read:read+length], signed=True)
+        parsed[f'{channel:02d}-{name}'] = int.from_bytes(data[read:read+length], signed=True)
         read += length
 
-        reached_end = metric == 0x9000
+        reached_end = channel == 0x9000
 
     # Finally, we encounter this end marker
     # bytes 582-589 = 0x9000 0000 020b 0552
