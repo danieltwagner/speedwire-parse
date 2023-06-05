@@ -14,7 +14,8 @@ TAG_SMA_NET_2 = b'\x00\x10'
 GROUP1 = b'\x00\x00\x00\x01'
 
 KNOWN_METRICS = {
-    0x0002: "export-tenths-watt"
+    2: "export-tenths-watt",
+    10: "also-export-tenths-watt",
 }
 
 class UnkownProtocolException(Exception):
@@ -85,7 +86,7 @@ def parse_sma_net_packet(data):
         if length == 0x08:
             name += "-cumulative"
 
-        parsed[f'{metric:02d}-{name}'] = int.from_bytes(data[read:read+length])
+        parsed[f'{metric:02d}-{name}'] = int.from_bytes(data[read:read+length], signed=True)
         read += length
 
         reached_end = metric == 0x9000
