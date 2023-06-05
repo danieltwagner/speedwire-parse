@@ -105,13 +105,7 @@ def parse_sma_net_packet(data):
     parsed["uptime-millis"] = int.from_bytes(data[10:14])
     read = 14
 
-    # Now parse the regular parts of the packet.
-    # They are structured like so:
-    # 0x0001 0400 xxxx xxxx
-    # where the first 2 bytes appear to be the channel number,
-    # the next byte is the length of the data, followed by a zero byte.
-    # Next comes the actual value.
-
+    # Now parse the channels
     reached_end = False
     while not reached_end:
         channel = int.from_bytes(data[read:read+2])
