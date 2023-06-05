@@ -14,7 +14,7 @@ TAG_SMA_NET_2 = b'\x00\x10'
 GROUP1 = b'\x00\x00\x00\x01'
 
 KNOWN_METRICS = {
-    0x0002: "export_tenths_watt"
+    0x0002: "export-tenths-watt"
 }
 
 class UnkownProtocolException(Exception):
@@ -64,7 +64,7 @@ def parse_sma_net_packet(data):
 
     # Next comes some unknown data, could be meter number? followed by uptime
     # bytes   2-  9 = 0x0003 0174 b356 e7ff
-    parsed["_uptime_millis"] = int.from_bytes(data[10:14])
+    parsed["uptime-millis"] = int.from_bytes(data[10:14])
     read = 14
 
     # Now parse the regular parts of the packet.
@@ -83,9 +83,9 @@ def parse_sma_net_packet(data):
         
         name = KNOWN_METRICS[metric] if metric in KNOWN_METRICS else "unknown"
         if length == 0x08:
-            name += "_cumulative"
+            name += "-cumulative"
 
-        parsed[f'{metric:02d}_{name}'] = int.from_bytes(data[read:read+length])
+        parsed[f'{metric:02d}-{name}'] = int.from_bytes(data[read:read+length])
         read += length
 
         reached_end = metric == 0x9000
