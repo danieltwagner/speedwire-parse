@@ -33,7 +33,7 @@ KNOWN_CHANNELS = {
     32: "grid-voltage-phase-L1-mV",
     33: "power-factor-L1",
 
-    21: "power-drawn-L2-tenths-watt",
+    41: "power-drawn-L2-tenths-watt",
     42: "power-grid-feeding-L2-tenth-watts",
     43: "negative-reactive-power-grid-feed-L2-var",
     44: "reactive-power-grid-feed-L2-var",
@@ -43,7 +43,7 @@ KNOWN_CHANNELS = {
     52: "grid-voltage-phase-L2-mV",
     53: "power-factor-L2",
 
-    21: "power-drawn-L3-tenths-watt",
+    61: "power-drawn-L3-tenths-watt",
     62: "power-grid-feeding-L3-tenth-watts",
     63: "negative-reactive-power-grid-feed-L3-var",
     64: "reactive-power-grid-feed-L3-var",
@@ -120,7 +120,7 @@ def parse_sma_net_packet(data):
         parsed[f'{channel:02d}-{name}'] = int.from_bytes(data[read:read+length], signed=True)
         read += length
 
-        reached_end = channel == 0x9000
+        reached_end = int.from_bytes(data[read:read+2]) == 0x9000
 
     # Finally, we encounter this end marker
     # bytes 582-589 = 0x9000 0000 020b 0552

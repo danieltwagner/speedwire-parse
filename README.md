@@ -19,42 +19,42 @@ Each channel looks like `0x0001 0400 xxxx xxxx` where the first 2 bytes appear t
 
 The channels were experimentally determined to be:
 ```
-1: power-drawn-tenths-watt
-2: grid-feed-in-tenths-watt
-3: negative-reactive-power-grid-feed-var
-4: reactive-power-grid-feed-var
-9: negative-apparent-power-tenths-VA
-10: apparent-power-tenths-VA
-13: power-factor
-14: grid-frequency-Hz
+ 1: Power Drawn (1/10 Watt)
+ 2: Grid Feed-in (1/10 Watt)
+ 3: Reactive Power Grid-Feed (negative values only) (var)
+ 4: Reactive Power Grid-Feed (positive values only) (var)
+ 9: Apparent Power (negative values only) (1/10 VA)
+10: Apparent Power (positive values only) (1/10 VA)
+13: Power Factor (1/1000)
+14: Grid Frequency (Hz)
 
-21: power-drawn-L1-tenths-watt
-22: power-grid-feeding-L1-tenth-watts
-23: negative-reactive-power-grid-feed-L1-var
-24: reactive-power-grid-feed-L1-var
-29: negative-apparent-power-L1-tenths-VA
-30: apparent-power-L1-tenths-VA
-31: grid-current-phase-L1-mA
-32: grid-voltage-phase-L1-mV
-33: power-factor-L1
+21: Power Drawn Phase L1 (1/10 Watt)
+22: Grid Feed-in Phase L1 (1/10 Watt)
+23: Reactive Power Grid-Feed Phase L1 (negative values only) (var)
+24: Reactive Power Grid-Feed Phase L1 (positive values only) (var)
+29: Apparent Power Phase L1 (negative values only) (1/10 VA)
+30: Apparent Power Phase L1 (positive values only) (1/10 VA)
+31: Grid Current Phase L1 (mA)
+32: Grid Voltage Phase L1 (mV)
+33: Power Factor Phase L1 (1/1000)
 
-21: power-drawn-L2-tenths-watt
-42: power-grid-feeding-L2-tenth-watts
-43: negative-reactive-power-grid-feed-L2-var
-44: reactive-power-grid-feed-L2-var
-49: negative-apparent-power-L2-tenths-VA
-50: apparent-power-L2-tenths-VA
-51: grid-current-phase-L2-mA
-52: grid-voltage-phase-L2-mV
-53: power-factor-L2
+41: Power Drawn Phase L2 (1/10 Watt)
+42: Grid Feed-in Phase L2 (1/10 Watt)
+43: Reactive Power Grid-Feed Phase L2 (negative values only) (var)
+44: Reactive Power Grid-Feed Phase L2 (positive values only) (var)
+49: Apparent Power Phase L2 (negative values only) (1/10 VA)
+50: Apparent Power Phase L2 (positive values only) (1/10 VA)
+51: Grid Current Phase L2 (mA)
+52: Grid Voltage Phase L2 (mV)
+53: Power Factor Phase L2 (1/1000)
 
-21: power-drawn-L3-tenths-watt
-62: power-grid-feeding-L3-tenth-watts
-63: negative-reactive-power-grid-feed-L3-var
-64: reactive-power-grid-feed-L3-var
-69: negative-apparent-power-L3-tenths-VA
-70: apparent-power-L3-tenths-VA
-71: grid-current-phase-L3-mA
-72: grid-voltage-phase-L3-mV
-73: power-factor-L3
+61: Power Drawn Phase L3 (1/10 Watt)
+62: Grid Feed-in Phase L3 (1/10 Watt)
+63: Reactive Power Grid-Feed Phase L3 (negative values only) (var)
+64: Reactive Power Grid-Feed Phase L3 (positive values only) (var)
+69: Apparent Power Phase L3 (negative values only) (1/10 VA)
+70: Apparent Power Phase L3 (positive values only) (1/10 VA)
+71: Grid Current Phase L3 (mA)
+72: Grid Voltage Phase L3 (mV)
+73: Power Factor Phase L3 (1/1000)
 ```
